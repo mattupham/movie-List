@@ -9,10 +9,31 @@ class Movie extends React.Component {
   }
 
   render() {
+    
+
     return (
-      this.props.viewMovieList.map((movie) => {
+      this.props.movieList.map((movie) => {
+        let isWatched = movie.watched;
         return <div key={movie.id}>
-          {movie.title}
+          <h3>{movie.title}</h3>
+          
+          { isWatched 
+            ? (<button 
+                value={movie.title}
+                onClick={this.props.handleToggleWatchStatus}
+                className="toggleWatchStatusButton"
+              >
+              Watched
+              </button>)
+            : (<button
+                value={movie.title}
+                className="toggleWatchStatusButton"
+                onClick={this.props.handleToggleWatchStatus}
+              >
+              Unwatched
+              </button>
+            )
+          }
         </div>;
       })
     )
