@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Movie from './components/Movie.jsx'
 import Search from './components/Search.jsx'
+import AddMovie from './components/AddMovie.jsx';
+import { networkInterfaces } from 'os';
 
 class MovieList extends React.Component {
   constructor(props) {
@@ -10,6 +12,8 @@ class MovieList extends React.Component {
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleSearcSubmit = this.handleSearcSubmit.bind(this);
     this.filterMovieListByPartialTitle = this.filterMovieListByPartialTitle.bind(this);
+    this.handleAddChange = this.handleAddChange.bind(this);
+    this.handleAddSubmit = this.handleAddSubmit.bind(this);
 
     this.state = {
       movieList: [
@@ -119,6 +123,7 @@ class MovieList extends React.Component {
         }
       ],
       searchValue: '',
+      addValue: ''
       
     }
     
@@ -130,19 +135,51 @@ class MovieList extends React.Component {
     })
   }
 
+  handleAddChange(event){
+    this.setState({addValue: event.target.value})
+  }
+
+  handleAddSubmit(event){
+    event.preventDefault();
+    let context = this;
+    let isMovieInList = this.state.movieList.map(function(movie){
+      return movie.title;
+    }).some(function(title){
+      return title.toLowerCase() === context.state.addValue.toLowerCase();
+    });
+
+    if (isMovieInList){
+      alert('Movie is already in list');
+    } else if (this.state.addValue === ''){
+      alert('Please Enter a Movie to Add');
+    } else {
+      let newMovie = {id: 1, title: this.state.addValue};
+      let newMovieList = this.state.movieList;
+      //add a movie to movieList
+      newMovieList.push(newMovie);
+      //update viewMovieList and re-render
+      this.setState({movieList: newMovieList, viewMovieList: newMovieList});
+    }
+    this.setState({addValue: ''});
+  }
+
   handleSearchChange(event){
     this.setState({searchValue: event.target.value})
   }
 
   handleSearcSubmit(event){
     event.preventDefault();
-    let filteredMovieList = this.filterMovieListByPartialTitle(this.state.movieList, this.state.searchValue);
-    if (filteredMovieList.length === 0){
-      alert('Movie Not Found');
+    if (this.state.searchValue === ''){
+      alert('Please Enter a Movie to Search');
     } else {
-      this.setState({viewMovieList: filteredMovieList});
+      let filteredMovieList = this.filterMovieListByPartialTitle(this.state.movieList, this.state.searchValue);
+      if (filteredMovieList.length === 0){
+        alert('Movie Not Found');
+      } else {
+        this.setState({viewMovieList: filteredMovieList});
+      }
+      this.setState({searchValue: ''});
     }
-    this.setState({searchValue: ''});
   }
 
   render() {
@@ -152,6 +189,11 @@ class MovieList extends React.Component {
           handleSearchChange={this.handleSearchChange} 
           handleSearchSubmit={this.handleSearcSubmit}
           searchValue={this.state.searchValue}
+        />
+        <AddMovie 
+          handleAddChange={this.handleAddChange}
+          handleAddSubmit={this.handleAddSubmit}
+          addValue={this.state.addValue}
         />
         <Movie
           viewMovieList={this.state.viewMovieList}
