@@ -14,8 +14,8 @@ class Movie extends React.Component {
     return (
       this.props.movieList.map((movie) => {
         let isWatched = movie.watched;
-        return <div key={movie.id}>
-          <h3>{movie.title}</h3>
+        return <div className="movieContainer" key={movie.id}>
+          <div className="movieTitle">{movie.title}</div>
           
           { isWatched 
             ? (<button 

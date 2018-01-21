@@ -42,6 +42,7 @@ class MovieList extends React.Component {
     //add watched property to move (default false)
     this.state = {
       movieList: db,
+      viewedMovieList: db,
       searchValue: '',
       addValue: '',
       //all, watched, unwatched
