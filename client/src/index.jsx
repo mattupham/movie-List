@@ -3,15 +3,15 @@ import ReactDOM from 'react-dom';
 import Movie from './components/Movie.jsx'
 import Search from './components/Search.jsx'
 import AddMovie from './components/AddMovie.jsx';
-import { networkInterfaces } from 'os';
 
 class MovieList extends React.Component {
   constructor(props) {
     super(props);
 
+    this.setWatch = this.setWatch.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleSearcSubmit = this.handleSearcSubmit.bind(this);
-    this.filterMovieListByPartialTitle = this.filterMovieListByPartialTitle.bind(this);
+    this.filterMovieListBySearch = this.filterMovieListBySearch.bind(this);
     this.handleAddChange = this.handleAddChange.bind(this);
     this.handleAddSubmit = this.handleAddSubmit.bind(this);
     this.handleToggleWatchStatus = this.handleToggleWatchStatus.bind(this);
@@ -25,7 +25,7 @@ class MovieList extends React.Component {
       {
         "id": 5555,
         "title": "Superman",
-        "watched": false
+        "watched": true
       },
       {
         "id": 666,
@@ -47,29 +47,58 @@ class MovieList extends React.Component {
       addValue: '',
       //all, watched, unwatched
       view: 'all'
-    }
-    
+    }  
   }
 
-  // toggleWatchStatus(toggledMovie){
-  // }
 
-  handleToggleWatchStatus(event){
-    let updatedMovieList = this.state.movieList;
-    // console.log('movie list', movieList)
-    updatedMovieList.forEach(function(movie){
-      //find a movie title match, then set that movie's watched property
-      if (event.target.value === movie.title){
-        movie.watched = !movie.watched;
-      }
-    });
-    this.setState({movieList: updatedMovieList});
-  }
-
-  filterMovieListByPartialTitle(movieList, title){
+  filterMovieListBySearch(movieList, title){
     return movieList.filter(movie => {
       return movie.title.toLowerCase().includes(title.toLowerCase());
     })
+  }
+
+  filteredMovieListByWatchStatus(movieList, watchedStatus){
+    if (watchedStatus === 'all'){
+      return movieList;
+    } else {
+      return movieList.filter(function(movie){
+        if (watchedStatus === 'watched'){
+          return movie.watched === true;
+        } else if (watchedStatus === 'unwatched'){
+          return movie.watched === false;
+        }
+      });
+    }
+  }
+
+  filterAllMovies(movieList){
+    let filteredMovieListBySearch = this.filterMovieListBySearch(movieList, this.state.searchValue);
+    let filteredMovieListByWatchStatus = this.filteredMovieListByWatchStatus(filteredMovieListBySearch, this.state.view);
+    return filteredMovieListByWatchStatus;
+  }
+
+
+
+  setWatch(movieList, target){
+    movieList.forEach(function(movie){
+      if (target === movie.title){
+        alert('match found')
+        movie.watched = !movie.watched;
+      }
+    })
+    return movieList;
+  }
+
+  handleToggleWatchStatus(event){
+    let updatedMovieList = this.state.movieList;
+    let updatedViewedMovieList = this.state.viewedMovieList;
+    let movieTitle = event.target.value;
+    this.setState(
+      {
+        movieList: this.setWatch(updatedMovieList, movieTitle), 
+        viewedMovieList: this.setWatch(updatedViewedMovieList, movieTitle)
+      }
+    );
   }
 
   handleAddChange(event){
@@ -109,12 +138,15 @@ class MovieList extends React.Component {
     if (this.state.searchValue === ''){
       alert('Please Enter a Movie to Search');
     } else {
-      let filteredMovieList = this.filterMovieListByPartialTitle(this.state.movieList, this.state.searchValue);
-      if (filteredMovieList.length === 0){
-        alert('Movie Not Found');
-      } else {
-        this.setState({movieList: filteredMovieList});
-      }
+
+      console.log(this.filterAllMovies(this.state.movieList));
+
+      // let filteredMovieList = this.filterMovieListBySearch(this.state.movieList, this.state.searchValue);
+      // if (filteredMovieList.length === 0){
+      //   alert('Movie Not Found');
+      // } else {
+      //   this.setState({movieList: filteredMovieList});
+      // }
       this.setState({searchValue: ''});
     }
   }
