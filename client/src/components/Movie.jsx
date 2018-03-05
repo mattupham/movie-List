@@ -20,7 +20,7 @@ class Movie extends React.Component {
   render() {
     return (
       <div>
-          <span onClick={this.displayMovieDetails.bind(this)}>{movie.title}</span>
+          <span onClick={this.displayMovieDetails.bind(this)}>{this.props.movie.title}</span>
             {/* { this.state.displayDetails && <MovieDetails movie={movie} /> } */}
           <button id="toggleButton" 
             // onClick={
