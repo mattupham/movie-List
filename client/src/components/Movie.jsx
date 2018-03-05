@@ -23,10 +23,11 @@ class Movie extends React.Component {
           <span onClick={this.displayMovieDetails.bind(this)}>{movie.title}</span>
             {/* { this.state.displayDetails && <MovieDetails movie={movie} /> } */}
           <button id="toggleButton" 
-            onClick={
-              () => {this.props.handleToggle(movie)}
-            }>
-            {movie.watched ? 'Seen' : 'Unseen'}
+            // onClick={
+            //   // () => {this.props.handleToggle(movie)}
+            // }
+            >
+            {/* {movie.watched ? 'Seen' : 'Unseen'} */}
           </button>        
       </div>
     )
