@@ -8,13 +8,7 @@ class MovieList extends React.Component {
   constructor(props) {
     super(props);
 
-    this.setWatch = this.setWatch.bind(this);
-    this.handleSearchChange = this.handleSearchChange.bind(this);
-    this.handleSearcSubmit = this.handleSearcSubmit.bind(this);
-    this.filterMovieListBySearch = this.filterMovieListBySearch.bind(this);
-    this.handleAddChange = this.handleAddChange.bind(this);
-    this.handleAddSubmit = this.handleAddSubmit.bind(this);
-    this.handleToggleWatchStatus = this.handleToggleWatchStatus.bind(this);
+    this.filterByViewStatus = this.filterByViewStatus.bind(this);
 
     let db = [
       {
@@ -25,7 +19,7 @@ class MovieList extends React.Component {
       {
         "id": 5555,
         "title": "Superman",
-        "watched": true
+        "watched": false
       },
       {
         "id": 666,
@@ -39,7 +33,95 @@ class MovieList extends React.Component {
       }
     ]
 
-    //add watched property to move (default false)
+    //add watched property to movie (default false)
+    this.state = {
+      movieList: [],
+      viewStatus: 'all',
+      search: ''
+    }  
+  }
+
+  componentDidMount() {
+    this.setState({movieList: db});
+  }
+
+  filterByViewStatus(movieListFilteredBySearch) {
+    if (this.state.viewStatus === 'all') {
+      return movieListFilteredBySearch;
+    } else {
+      return movieListFilteredBySearch.filter(movie => {
+        if (this.state.view === 'watched') {
+          return (movie.watched) ? true : false;
+        } else {
+          return (!movie.watched) ? true : false;
+        }
+      });
+    }
+  }
+
+
+
+  render() {
+    return (
+      <div>
+        {
+          this.displayMovies().map((movie, index) => 
+          {
+            return <Movie 
+              key={index}
+              id={index}
+              movie={movie}
+              handleToggle={this.handleToggle}
+            />
+          })
+        }
+      </div>
+    )
+  }
+
+
+}
+
+
+
+
+/*
+class MovieList extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.setWatch = this.setWatch.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+    this.filteredMovieListBySearch = this.filteredMovieListBySearch.bind(this);
+    this.handleAddChange = this.handleAddChange.bind(this);
+    this.handleAddSubmit = this.handleAddSubmit.bind(this);
+    this.handleToggleWatchStatus = this.handleToggleWatchStatus.bind(this);
+
+    let db = [
+      {
+        "id": 268,
+        "title": "Batman Begins",
+        "watched": false
+      },
+      {
+        "id": 5555,
+        "title": "Superman",
+        "watched": false
+      },
+      {
+        "id": 666,
+        "title": "Iron Man",
+        "watched": false
+      },
+      {
+        "id": 222,
+        "title": "Wonder Woman",
+        "watched": false
+      }
+    ]
+
+    //add watched property to movie (default false)
     this.state = {
       movieList: db,
       viewedMovieList: db,
@@ -51,7 +133,7 @@ class MovieList extends React.Component {
   }
 
 
-  filterMovieListBySearch(movieList, title){
+  filteredMovieListBySearch(movieList, title){
     return movieList.filter(movie => {
       return movie.title.toLowerCase().includes(title.toLowerCase());
     })
@@ -72,11 +154,21 @@ class MovieList extends React.Component {
   }
 
   filterAllMovies(movieList){
-    let filteredMovieListBySearch = this.filterMovieListBySearch(movieList, this.state.searchValue);
+    let filteredMovieListBySearch = this.filteredMovieListBySearch(movieList, this.state.searchValue);
     let filteredMovieListByWatchStatus = this.filteredMovieListByWatchStatus(filteredMovieListBySearch, this.state.view);
     return filteredMovieListByWatchStatus;
   }
 
+  searchMovies(movieTitle){
+    alert('movie title', movieTitle)
+    this.setState({searchValue: movieTitle});
+  }
+
+  displayMovies() {
+    console.log('displayed')
+    let searchFilteredMovieList =  this.filteredMovieListBySearch(this.state.movieList, this.state.searchValue);
+    return this.filteredMovieListByWatchStatus(searchFilteredMovieList, this.state.view);
+  }
 
 
   setWatch(movieList, target){
@@ -86,20 +178,33 @@ class MovieList extends React.Component {
         movie.watched = !movie.watched;
       }
     })
+    console.log('movie list', movieList);
     return movieList;
   }
 
   handleToggleWatchStatus(event){
-    let updatedMovieList = this.state.movieList;
-    let updatedViewedMovieList = this.state.viewedMovieList;
+    let movieList = this.state.movieList;
+    let viewedMovieList = this.state.viewedMovieList;
     let movieTitle = event.target.value;
-    this.setState(
-      {
-        movieList: this.setWatch(updatedMovieList, movieTitle), 
-        viewedMovieList: this.setWatch(updatedViewedMovieList, movieTitle)
-      }
-    );
+    let updatedMovieList = this.setWatch(movieList, movieTitle);
+    let updatedViewedMovieList = this.setWatch(viewedMovieList, movieTitle);
+    console.log('updatedViewedMovieLIst', updatedViewedMovieList[0])
+    this.setState({
+      // movieList: updatedMovieList,
+      viewedMovieList: updatedViewedMovieList
+    });
+    // this.setWatch(updatedMovieList, movieTitle);
+    // this.setWatch(updatedViewedMovieList, movieTitle);
+    
+    // this.setState(
+    //   {
+    //     // movieList: this.setWatch(movieList, movieTitle), 
+    //     viewedMovieList: this.setWatch(viewedMovieList, movieTitle)
+    //   }
+    // );
+    
   }
+  
 
   handleAddChange(event){
     this.setState({addValue: event.target.value})
@@ -124,31 +229,29 @@ class MovieList extends React.Component {
       //add a movie to movieList
       newMovieList.push(newMovie);
       //update movieList and re-render
-      this.setState({movieList: newMovieList, movieList: newMovieList});
+      this.setState({movieList: newMovieList});
     }
     this.setState({addValue: ''});
   }
 
   handleSearchChange(event){
-    this.setState({searchValue: event.target.value})
+    // this.setState({searchValue: event.target.value})
   }
 
-  handleSearcSubmit(event){
-    event.preventDefault();
-    if (this.state.searchValue === ''){
-      alert('Please Enter a Movie to Search');
-    } else {
 
-      console.log(this.filterAllMovies(this.state.movieList));
 
-      // let filteredMovieList = this.filterMovieListBySearch(this.state.movieList, this.state.searchValue);
-      // if (filteredMovieList.length === 0){
-      //   alert('Movie Not Found');
-      // } else {
-      //   this.setState({movieList: filteredMovieList});
-      // }
-      this.setState({searchValue: ''});
-    }
+
+  handleSearchSubmit(searchQuery){
+    // alert(searchQuery);
+    this.setState({searchValue: searchQuery});
+    // if (searchQuery === ''){
+    //   alert('Please Enter a Movie to Search');
+    // } else {
+
+    //   console.log(this.filterAllMovies(this.state.movieList));
+
+    //   this.setState({searchValue: ''});
+    // }
   }
 
   render() {
@@ -156,7 +259,7 @@ class MovieList extends React.Component {
       <div>
         <Search 
           handleSearchChange={this.handleSearchChange} 
-          handleSearchSubmit={this.handleSearcSubmit}
+          handleSearchSubmit={this.handleSearchSubmit}
           searchValue={this.state.searchValue}
         />
         <AddMovie 
@@ -165,14 +268,15 @@ class MovieList extends React.Component {
           addValue={this.state.addValue}
         />
         <Movie
-          movieList={this.state.movieList}
+
+          movieList={this.displayMovies()}
           handleToggleWatchStatus={this.handleToggleWatchStatus}
         />
       </div>
     )
   }
 }
-
-  ReactDOM.render(<MovieList />, document.getElementById('app'));
+*/
+ReactDOM.render(<MovieList />, document.getElementById('app'));
 
 

@@ -11,23 +11,32 @@ class Search extends React.Component {
   render() {
     return (
       <div>
-        <form 
-          onSubmit={this.props.handleSearchSubmit}
+
+        <input type="text" placeholder="Enter a Movie" ref={input => this.searchInput = input} />
+        <button onClick={ () => {this.props.handleSearchSubmit(this.searchInput.value);} }>Search!</button>
+
+        {/* <form 
+          onSubmit={}
         >
+        
           <label>
             <input 
-              value={this.props.searchValue}
+              ref={(input) => { this.searchInput = input; }}
+              // value={this.props.searchValue}
               className="search"
               type="text" 
               placeholder="Enter a Movie" 
-              onChange={this.props.handleSearchChange} 
+              // onChange={this.props.handleSearchChange} 
             />
           </label>
           <input 
             type="submit"
             value="Search"
+            onClick={this.props.handleSearcSubmit(this.searchInput.value)}
+
+
           />
-        </form>
+        </form> */}
       </div>
     );
   }
