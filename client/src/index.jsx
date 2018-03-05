@@ -44,6 +44,12 @@ class MovieList extends React.Component {
     );
   }
 
+  search(query) {
+    this.setState({
+      search: query
+    })
+  }
+
   filterByViewStatus(movieListFilteredBySearch) {
     if (this.state.viewStatus === 'all') {
       return movieListFilteredBySearch;
@@ -76,6 +82,7 @@ class MovieList extends React.Component {
   render() {
     return (
       <div>
+        <Search />
         {
           this.displayMovies().map((movie, index) => 
           {

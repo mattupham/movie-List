@@ -6,7 +6,7 @@ class Movie extends React.Component {
   constructor(props) {
     super(props);
 
-    // this.displayMovieDetails = this.displayMovieDetails.bind(this);
+    this.displayMovieDetails = this.displayMovieDetails.bind(this);
 
     this.state = {
       displayDetails: false
@@ -20,14 +20,10 @@ class Movie extends React.Component {
   render() {
     return (
       <div>
-          <span onClick={this.displayMovieDetails.bind(this)}>{this.props.movie.title}</span>
-            {/* { this.state.displayDetails && <MovieDetails movie={movie} /> } */}
-          <button id="toggleButton" 
-            // onClick={
-            //   // () => {this.props.handleToggle(movie)}
-            // }
-            >
-            {/* {movie.watched ? 'Seen' : 'Unseen'} */}
+          <span onClick={this.displayMovieDetails}>
+            {this.props.movie.title}
+          </span>
+          <button id="toggleButton">
           </button>        
       </div>
     )
