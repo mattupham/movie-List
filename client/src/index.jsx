@@ -59,7 +59,15 @@ class MovieList extends React.Component {
     }
   }
 
-
+  filterBySearch(query) {
+    if (query === ''){
+      return this.state.movieList;
+    } else {
+      return this.state.movieList.filter((movie) => {
+        return movie.title.toLowerCase().includes(query.toLowerCase());
+      });
+    }
+  }
 
   render() {
     return (
