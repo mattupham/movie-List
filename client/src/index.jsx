@@ -112,12 +112,11 @@ class MovieList extends React.Component {
         {
           this.displayMovies().map((movie, index) => 
           {
-            // console.log('movie', movie);
             return <Movie 
               key={index}
               id={index}
               movie={movie}
-              // handleToggle={this.handleToggle}
+              toggleMovieWatchedStatus={this.toggleMovieWatchedStatus}
             />
           })
         }
