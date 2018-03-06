@@ -11,7 +11,12 @@ class MovieList extends React.Component {
     this.search = this.search.bind(this);
     this.addMovie = this.addMovie.bind(this);
     this.toggleMovieWatchedStatus = this.toggleMovieWatchedStatus.bind(this);
-      
+    
+    this.setViewStatusToWatched = this.setViewStatusToWatched.bind(this);
+    this.setViewStatusToUnwatched = this.setViewStatusToUnwatched.bind(this);
+    this.setViewStatusToAll = this.setViewStatusToAll.bind(this);
+
+  
     this.state = {
       movieList: [],
       viewStatus: 'all',
@@ -60,10 +65,12 @@ class MovieList extends React.Component {
       return movieListFilteredBySearch;
     } else {
       return movieListFilteredBySearch.filter(movie => {
-        if (this.state.view === 'watched') {
-          return (movie.watched) ? true : false;
+        if (this.state.viewStatus === 'watched') {
+          // return (movie.watched) ? true : false;
+          return movie.watched;
         } else {
-          return (!movie.watched) ? true : false;
+          // return (!movie.watched) ? true : false;
+          return !movie.watched;
         }
       });
     }
@@ -104,11 +111,30 @@ class MovieList extends React.Component {
     this.setState({movieList: newMovieList});
   }
 
+  setViewStatusToWatched() {
+    this.setState({viewStatus: 'watched'});
+  }
+
+  setViewStatusToUnwatched() {
+    this.setState({viewStatus: 'unwatched'});
+  }
+
+  setViewStatusToAll() {
+    this.setState({
+      viewStatus: 'all',
+      search: ''
+    });
+  }
+
   render() {
     return (
       <div>
         <Search search={this.search}/>
         <AddMovie addMovie={this.addMovie}/>
+
+        <button className="filterButton" onClick={this.setViewStatusToWatched}>Watched Movies</button>
+        <button className="filterButton" onClick={this.setViewStatusToUnwatched}>Unwatched Movies</button>
+        <button className="filterButton" onClick={this.setViewStatusToAll}>All Movies</button>
         {
           this.displayMovies().map((movie, index) => 
           {
