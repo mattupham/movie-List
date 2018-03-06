@@ -8,6 +8,8 @@ class MovieList extends React.Component {
   constructor(props) {
     super(props);
 
+    this.search = this.search.bind(this);
+      
     this.state = {
       movieList: [],
       viewStatus: 'all',
@@ -45,6 +47,7 @@ class MovieList extends React.Component {
   }
 
   search(query) {
+    // console.log('query: ', query);
     this.setState({
       search: query
     })
@@ -82,7 +85,7 @@ class MovieList extends React.Component {
   render() {
     return (
       <div>
-        <Search />
+        <Search search={this.search}/>
         {
           this.displayMovies().map((movie, index) => 
           {

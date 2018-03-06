@@ -9,8 +9,17 @@ class Search extends React.Component {
   render() {
     return (
       <div>
-        <input type="text" placeholder="Enter a Movie" ref={input => this.searchInput = input} />
-        <button onClick={ () => {this.props.handleSearchSubmit(this.searchInput.value);} }>Search!</button>
+        <input 
+          type="text" 
+          placeholder="Enter a Movie" 
+          ref={input => this.searchInput = input} 
+        />
+        <button 
+          onClick={ () => {
+            this.props.search(this.searchInput.value);
+          } }>
+          Search!
+        </button>
       </div>
     );
   }
