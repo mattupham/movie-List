@@ -10,6 +10,7 @@ class MovieList extends React.Component {
 
     this.search = this.search.bind(this);
     this.addMovie = this.addMovie.bind(this);
+    this.toggleMovieWatchedStatus = this.toggleMovieWatchedStatus.bind(this);
       
     this.state = {
       movieList: [],
@@ -83,6 +84,14 @@ class MovieList extends React.Component {
     return this.filterByViewStatus(searchFilteredMovieList);
   }
 
+  toggleMovieWatchedStatus(toggledMovie) {
+    console.log('toggled movie', toggledMovie);
+    toggledMovie.watched = toggledMovie.watched ? !toggledMovie.watched : true;
+    this.setState({
+      viewStatus: this.state.viewStatus
+    })
+  }
+
   addMovie(movieTitle) {
     let newMovieList = this.state.movieList;
     newMovieList.push({
@@ -90,7 +99,6 @@ class MovieList extends React.Component {
       "title": movieTitle,
       "watched": false
     });
-    // console.log('new movie list', newMovieList);
     //add to database
     //get all movies
     this.setState({movieList: newMovieList});
