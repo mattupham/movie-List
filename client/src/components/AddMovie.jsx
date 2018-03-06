@@ -4,30 +4,24 @@ import ReactDOM from 'react-dom';
 class AddMovie extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-    }
   }
 
   render() {
     return (
       <div>
-        <form 
-          onSubmit={this.props.handleAddSubmit}
-        >
-          <label>
-            <input 
-              value={this.props.addValue}
-              className="search"
-              type="text" 
-              placeholder="Enter a Movie" 
-              onChange={this.props.handleAddChange} 
-            />
-          </label>
-          <input 
-            type="submit"
-            value="Add"
-          />
-        </form>
+        <input 
+          type="text" 
+          placeholder="Add a Movie" 
+          ref={input => this.addInput = input} 
+        />
+        <button 
+          onClick={
+            () => {
+              this.props.addMovie(this.addInput.value);
+            }
+          }>
+          Add!
+        </button>
       </div>
     );
   }

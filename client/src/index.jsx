@@ -9,6 +9,7 @@ class MovieList extends React.Component {
     super(props);
 
     this.search = this.search.bind(this);
+    this.addMovie = this.addMovie.bind(this);
       
     this.state = {
       movieList: [],
@@ -82,10 +83,24 @@ class MovieList extends React.Component {
     return this.filterByViewStatus(searchFilteredMovieList);
   }
 
+  addMovie(movieTitle) {
+    let newMovieList = this.state.movieList;
+    newMovieList.push({
+      "id": 1,
+      "title": movieTitle,
+      "watched": false
+    });
+    // console.log('new movie list', newMovieList);
+    //add to database
+    //get all movies
+    this.setState({movieList: newMovieList});
+  }
+
   render() {
     return (
       <div>
         <Search search={this.search}/>
+        <AddMovie addMovie={this.addMovie}/>
         {
           this.displayMovies().map((movie, index) => 
           {
