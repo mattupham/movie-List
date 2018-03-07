@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom';
 import Movie from './components/Movie.jsx'
 import Search from './components/Search.jsx'
 import AddMovie from './components/AddMovie.jsx';
+import $ from 'jquery';
+import Axios from 'axios';
+
+
 
 class MovieList extends React.Component {
   constructor(props) {
@@ -25,32 +29,15 @@ class MovieList extends React.Component {
   }
 
   componentDidMount() {
-    this.setState(
-      {
-        movieList: [
-          {
-            "id": 268,
-            "title": "Batman Begins",
-            "watched": false
-          },
-          {
-            "id": 5555,
-            "title": "Superman",
-            "watched": false
-          },
-          {
-            "id": 666,
-            "title": "Iron Man",
-            "watched": false
-          },
-          {
-            "id": 222,
-            "title": "Wonder Woman",
-            "watched": false
-          }
-        ]
-      }
-    );
+    Axios.get('/load')
+    .then(function (res) {
+      //set initial movie list state
+      let initalMovieList = res.data;
+      this.setState({movieList: initalMovieList});
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
   }
 
   search(query) {

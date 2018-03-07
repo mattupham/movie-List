@@ -18,10 +18,10 @@ class Movie extends React.Component {
 
   render() {
     return (
-      <div>
-        <span>{this.props.movie.title}</span>
+      <div className="movieContainer">
+        <span className="movieTitleContainer">{this.props.movie.title}</span>
         <button 
-          id="toggleButton" 
+          className="toggleWatchStatusButton" 
           onClick={
             () => {
               this.props.toggleMovieWatchedStatus(this.props.movie)

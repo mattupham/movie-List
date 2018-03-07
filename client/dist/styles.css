@@ -1,15 +1,31 @@
-.movieContainer{
+.movieContainer {
   border: 1px solid green;
   padding-bottom: 5px;
-  padding-top: 5px
+  padding-top: 5px;
+  width: 448px;
+  height: 50px;
 }
 
-.toggleWatchStatusButton{
+.movieTitleContainer {
   border: 1px solid black;
+  padding: 5px 5px;
 }
 
-.movieTitle{
+.toggleWatchStatusButton {
+  border: 1px solid black;
+  border-radius: 10px;
+  float: right;
+  margin-right: 10px;
+}
+
+#movieListTitle {
   border: 1px solid black;
   display: inline-block;
 }
 
+
+.filterButton {
+  width: 150px;
+  background-color: lightblue;
+  height: 25px;
+}
