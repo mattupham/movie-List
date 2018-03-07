@@ -110,11 +110,7 @@ class MovieList extends React.Component {
     .catch((err) => {
       console.log(err);
     });
-
-
-
-
-   
+    
   }
 
   setViewStatusToWatched() {
