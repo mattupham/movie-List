@@ -18,7 +18,6 @@ class MovieList extends React.Component {
     this.setViewStatusToUnwatched = this.setViewStatusToUnwatched.bind(this);
     this.setViewStatusToAll = this.setViewStatusToAll.bind(this);
 
-  
     this.state = {
       movieList: [],
       viewStatus: 'all',
@@ -28,9 +27,10 @@ class MovieList extends React.Component {
 
   componentDidMount() {
     const context = this;
-    Axios.get('/movies')
+    Axios.get('/load')
     .then((res) => {
       //set initial movie list state
+      // console.log('res', res.data)
       context.setState({movieList: res.data});
     })
     .catch((err) => {
@@ -110,7 +110,7 @@ class MovieList extends React.Component {
     .catch((err) => {
       console.log(err);
     });
-    
+
   }
 
   setViewStatusToWatched() {
