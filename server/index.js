@@ -4,6 +4,11 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const movieAPI = require('../lib/movieAPI.js');
 
+movieAPI.getMovies((err, movieDataFromAPI) => {
+  console.log('error', err);
+  console.log('movie data from API', movieDataFromAPI);
+});
+
 const db = [
   {
     "id": 268,
