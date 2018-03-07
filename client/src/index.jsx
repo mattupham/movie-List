@@ -6,8 +6,6 @@ import AddMovie from './components/AddMovie.jsx';
 import $ from 'jquery';
 import Axios from 'axios';
 
-
-
 class MovieList extends React.Component {
   constructor(props) {
     super(props);
@@ -29,13 +27,13 @@ class MovieList extends React.Component {
   }
 
   componentDidMount() {
-    Axios.get('/load')
-    .then(function (res) {
+    const context = this;
+    Axios.get('/movies')
+    .then((res) => {
       //set initial movie list state
-      let initalMovieList = res.data;
-      this.setState({movieList: initalMovieList});
+      context.setState({movieList: res.data});
     })
-    .catch(function (err) {
+    .catch((err) => {
       console.log(err);
     });
   }
@@ -87,15 +85,36 @@ class MovieList extends React.Component {
   }
 
   addMovie(movieTitle) {
-    let newMovieList = this.state.movieList;
-    newMovieList.push({
+    const context = this;
+    
+    let newMovie = {
       "id": 1,
       "title": movieTitle,
       "watched": false
+    }
+
+    Axios.post('/movie', newMovie)
+    .then((res) => {
+      // console.log('response: ', res)
+
+      Axios.get('/movies')
+      .then((res) => {
+        //set initial movie list state
+        context.setState({movieList: res.data});
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    })
+    .catch((err) => {
+      console.log(err);
     });
-    //add to database
-    //get all movies
-    this.setState({movieList: newMovieList});
+
+
+
+
+   
   }
 
   setViewStatusToWatched() {

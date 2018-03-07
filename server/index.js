@@ -31,4 +31,10 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 app.listen(3000, function () { console.log('MovieList app listening on port 3000!') });
 
 //loads movie list initially
-app.get('/load', (req, res) => res.send(db));
+app.get('/movies', (req, res) => res.send(db));
+
+app.post('/movie', (req, res) => {
+  const newMovie = req.body;
+  db.push(newMovie);
+  res.send('success');
+});
