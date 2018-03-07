@@ -30,8 +30,8 @@ class MovieList extends React.Component {
     Axios.get('/load')
     .then((res) => {
       //set initial movie list state
-      // console.log('res', res.data)
-      context.setState({movieList: res.data});
+      console.log('res', res.data)
+      // context.setState({movieList: res.data});
     })
     .catch((err) => {
       console.log(err);
